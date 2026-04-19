@@ -14,7 +14,6 @@ augroup END
 set ruler                   " show cursor position in status bar
 set showcmd                 " show incomplete commands in the bottom bar
 set showmatch               " highlight matching brackets
-set cursorline              " highlight the current line
 
 set expandtab               " use spaces, not tabs
 set tabstop=4               " tab = 4 spaces visually
