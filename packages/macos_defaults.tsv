@@ -1,0 +1,40 @@
+# macOS defaults snapshot — tab-separated: domain<TAB>key<TAB>type<TAB>value<TAB>restart
+# type: bool | int | float | string
+# restart: dock | finder | systemui | -
+# Lines starting with # and blank lines are ignored.
+# $HOME is expanded in the value field.
+#
+# Regenerate from current system with: scripts/macos_capture.sh
+#
+# ── Dock ──────────────────────────────────────────────────────────────────────
+com.apple.dock	autohide	bool	true	dock
+com.apple.dock	tilesize	int	65	dock
+com.apple.dock	largesize	int	128	dock
+com.apple.dock	show-recents	bool	false	dock
+# ── Hot corners (0=no-op, 2=Mission Control, 3=App Windows, 4=Desktop, 5=Start screensaver, 6=Disable screensaver, 7=Dashboard, 10=Put display to sleep, 11=Launchpad, 12=Notification Center) ──
+com.apple.dock	wvous-bl-corner	int	4	dock
+com.apple.dock	wvous-br-corner	int	1	dock
+com.apple.dock	wvous-bl-modifier	int	0	dock
+com.apple.dock	wvous-br-modifier	int	0	dock
+# ── Finder ────────────────────────────────────────────────────────────────────
+NSGlobalDomain	AppleShowAllExtensions	bool	true	finder
+com.apple.finder	ShowPathbar	bool	true	finder
+com.apple.finder	ShowStatusBar	bool	true	finder
+com.apple.finder	FXPreferredViewStyle	string	Nlsv	finder
+com.apple.finder	NewWindowTarget	string	PfHm	finder
+com.apple.finder	ShowHardDrivesOnDesktop	bool	false	finder
+com.apple.finder	ShowExternalHardDrivesOnDesktop	bool	false	finder
+com.apple.finder	ShowRemovableMediaOnDesktop	bool	false	finder
+# ── Keyboard ──────────────────────────────────────────────────────────────────
+NSGlobalDomain	AppleKeyboardUIMode	int	0	-
+NSGlobalDomain	NSAutomaticSpellingCorrectionEnabled	bool	false	-
+NSGlobalDomain	NSAutomaticQuoteSubstitutionEnabled	bool	true	-
+NSGlobalDomain	NSAutomaticDashSubstitutionEnabled	bool	true	-
+NSGlobalDomain	NSAutomaticCapitalizationEnabled	bool	false	-
+NSGlobalDomain	NSAutomaticPeriodSubstitutionEnabled	bool	false	-
+# ── Trackpad ──────────────────────────────────────────────────────────────────
+com.apple.driver.AppleBluetoothMultitouch.trackpad	Clicking	bool	true	-
+com.apple.driver.AppleBluetoothMultitouch.trackpad	TrackpadThreeFingerDrag	bool	false	-
+com.apple.AppleMultitouchTrackpad	Clicking	bool	true	-
+com.apple.AppleMultitouchTrackpad	TrackpadThreeFingerDrag	bool	false	-
+NSGlobalDomain	com.apple.swipescrolldirection	bool	true	-
