@@ -14,6 +14,10 @@ else
     alias ll='ls -lah'
 fi
 
+cd() {
+    builtin cd "$@" && ll
+}
+
 alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
