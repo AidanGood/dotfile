@@ -19,23 +19,20 @@ install_packages() {
 # ── Homebrew ──────────────────────────────────────────────────────────────────
 
 _ensure_brew() {
-    if command_exists brew; then
-        log::info "Homebrew already installed"
-        return
-    fi
-
-    log::warn "Homebrew not found."
-    read -r -p "  Install Homebrew now? [y/N] " reply
-    if [[ "$reply" =~ ^[Yy]$ ]]; then
-        log::info "Installing Homebrew..."
-        /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        # Add brew to PATH for the rest of this session
-        eval "$("${BREW_PREFIX}/bin/brew" shellenv)"
+    if [[ ! -x "${BREW_PREFIX}/bin/brew" ]]; then
+        log::info "Homebrew not found — installing non-interactively"
+        # NONINTERACTIVE=1 skips the installer's own confirmation prompt and
+        # relies on the sudo credentials primed by _sudo_keepalive.
+        NONINTERACTIVE=1 /bin/bash -c \
+            "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
         log::ok "Homebrew installed"
     else
-        log::error "Homebrew is required on macOS. Aborting."
-        exit 1
+        log::info "Homebrew already installed"
     fi
+
+    # Always activate — installed-but-not-on-PATH is the fresh-machine default
+    # (Apple Silicon installs under /opt/homebrew which no stock shell rc knows about).
+    eval "$("${BREW_PREFIX}/bin/brew" shellenv)"
 }
 
 _brew_install_all() {
