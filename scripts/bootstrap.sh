@@ -8,10 +8,11 @@ bootstrap() {
 
     _detect_os
     _detect_arch
-    _check_bash_version
     is_macos && _ensure_xcode_clt
     _check_deps
     _sudo_keepalive
+    is_macos && _ensure_modern_bash
+    _check_bash_version
 
     log::ok "Bootstrap complete (OS=${OS}, BREW_PREFIX=${BREW_PREFIX:-n/a})"
 }
@@ -43,14 +44,35 @@ _detect_arch() {
 _check_bash_version() {
     local major="${BASH_VERSINFO[0]}"
     if [[ "$major" -lt 4 ]]; then
-        log::warn "Bash ${BASH_VERSION} detected — this script requires bash 4+."
-        if is_macos; then
-            log::warn "Install a newer bash with: brew install bash"
-            log::warn "Then re-run with: ${BREW_PREFIX}/bin/bash install.sh"
-        fi
+        log::error "Bash ${BASH_VERSION} detected — this script requires bash 4+."
         exit 1
     fi
     log::info "Bash version: ${BASH_VERSION}"
+}
+
+# Stock macOS ships bash 3.2 (GPLv2-era). Rather than bail out and tell the
+# user to reinstall, install Homebrew bash here and re-exec this installer
+# under it. Guarded by DOTFILES_BASH_REEXEC to prevent loops.
+_ensure_modern_bash() {
+    [[ "${BASH_VERSINFO[0]}" -ge 4 ]] && return
+
+    if [[ -n "${DOTFILES_BASH_REEXEC:-}" ]]; then
+        log::error "Already re-exec'd but bash is still ${BASH_VERSION} — aborting"
+        exit 1
+    fi
+
+    local brew_bash="${BREW_PREFIX}/bin/bash"
+
+    if [[ ! -x "$brew_bash" ]]; then
+        log::info "Old bash (${BASH_VERSION}) — bootstrapping Homebrew bash"
+        _ensure_brew           # defined in install_packages.sh (sourced before bootstrap runs)
+        log::info "Installing modern bash via brew"
+        brew install bash --quiet
+    fi
+
+    log::ok "Re-executing installer under ${brew_bash}"
+    export DOTFILES_BASH_REEXEC=1
+    exec "$brew_bash" "${DOTFILES_DIR}/install.sh" "$@"
 }
 
 _check_deps() {
