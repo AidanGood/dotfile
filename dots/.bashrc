@@ -15,6 +15,11 @@ shopt -s cdspell       # auto-correct minor typos in cd
 shopt -s autocd        # type a directory name to cd into it
 shopt -s cmdhist       # save multi-line commands as single history entry
 
+# macOS Apply Silicon v Intel paths
+for brew in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+    [[ -x "$brew" ]] && eval "$("$brew" shellenv)" && break
+done
+
 # ~/.local/bin for user scripts and pipx-installed tools
 export PATH="${HOME}/.local/bin:${PATH}"
 
