@@ -1,4 +1,3 @@
-
 set nocompatible            " disable vi compatibility mode
 syntax enable               " syntax highlighting
 set encoding=utf-8
